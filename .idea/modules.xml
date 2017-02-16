@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/GoogleCalendarAPI.iml" filepath="$PROJECT_DIR$/GoogleCalendarAPI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GoogleCalendarAPI.iml" filepath="$PROJECT_DIR$/.idea/modules/GoogleCalendarAPI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GoogleCalendarAPI_main.iml" filepath="$PROJECT_DIR$/.idea/modules/GoogleCalendarAPI_main.iml" group="GoogleCalendarAPI" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GoogleCalendarAPI_test.iml" filepath="$PROJECT_DIR$/.idea/modules/GoogleCalendarAPI_test.iml" group="GoogleCalendarAPI" />
     </modules>
   </component>
 </project>

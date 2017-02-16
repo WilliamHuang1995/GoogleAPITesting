@@ -46,7 +46,7 @@ public class Quickstart {
      * at ~/.credentials/calendar-java-quickstart
      */
     private static final List<String> SCOPES =
-            Arrays.asList(CalendarScopes.CALENDAR_READONLY);
+            Arrays.asList(CalendarScopes.CALENDAR_READONLY,CalendarScopes.CALENDAR);
 
     static {
         try {
@@ -58,6 +58,7 @@ public class Quickstart {
         }
     }
 
+    //Leave AS IS
     /**
      * Creates an authorized Credential object.
      * @return an authorized Credential object.
@@ -120,12 +121,55 @@ public class Quickstart {
             System.out.println("Upcoming events");
             for (Event event : items) {
                 DateTime start = event.getStart().getDateTime();
+                //if whole day event
                 if (start == null) {
                     start = event.getStart().getDate();
                 }
                 System.out.printf("%s (%s)\n", event.getSummary(), start);
             }
         }
+        makeEvent(service);
+
+    }
+    public static void makeEvent(com.google.api.services.calendar.Calendar service) throws IOException {
+        Event event = new Event()
+                .setSummary("Google I/O 2015")
+                .setLocation("800 Howard St., San Francisco, CA 94103")
+                .setDescription("A chance to hear more about Google's developer products.");
+
+        DateTime startDateTime = new DateTime("2017-02-16T09:00:00-07:00");
+        EventDateTime start = new EventDateTime()
+                .setDateTime(startDateTime)
+                .setTimeZone("America/Los_Angeles");
+        event.setStart(start);
+
+        DateTime endDateTime = new DateTime("2017-02-16T17:00:00-07:00");
+        EventDateTime end = new EventDateTime()
+                .setDateTime(endDateTime)
+                .setTimeZone("America/Los_Angeles");
+        event.setEnd(end);
+
+        String[] recurrence = new String[] {"RRULE:FREQ=DAILY;COUNT=2"};
+        event.setRecurrence(Arrays.asList(recurrence));
+
+        EventAttendee[] attendees = new EventAttendee[] {
+                new EventAttendee().setEmail("wjhuang@ucsd.edu"),
+                new EventAttendee().setEmail("jojolee2017@gmail.com"),
+        };
+        event.setAttendees(Arrays.asList(attendees));
+
+        EventReminder[] reminderOverrides = new EventReminder[] {
+                new EventReminder().setMethod("email").setMinutes(24 * 60),
+                new EventReminder().setMethod("popup").setMinutes(10),
+        };
+        Event.Reminders reminders = new Event.Reminders()
+                .setUseDefault(false)
+                .setOverrides(Arrays.asList(reminderOverrides));
+        event.setReminders(reminders);
+
+        String calendarId = "primary";
+        event = service.events().insert(calendarId, event).execute();
+        System.out.printf("Event created: %s\n", event.getHtmlLink());
     }
 
 }
